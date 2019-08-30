@@ -1,15 +1,16 @@
 
 export function beforeRegistration({ Vue, config, store, isServer }) {
   const VSF_PAYPAL_CODE = 'vsfpaypal'
-
-  store.dispatch('payment/addMethod', {
-    'title': 'Paypal',
-    'code': VSF_PAYPAL_CODE,
-    'cost': 0,
-    'costInclTax': 0,
-    'default': false,
-    'offline': true
-  })
+  if (!config.paypal.hasOwnProperty('addMethod') || config.paypal.addMethod === true) {
+    store.dispatch('payment/addMethod', {
+      'title': 'Paypal',
+      'code': VSF_PAYPAL_CODE,
+      'cost': 0,
+      'costInclTax': 0,
+      'default': false,
+      'offline': true
+    })
+  }
 
   if (!Vue.prototype.$isServer) {
     const clientId = config.paypal.clientId
