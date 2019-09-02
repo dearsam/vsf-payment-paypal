@@ -44,7 +44,7 @@ module.exports = ({ config, db }) => {
     // await database.saveTransaction(orderID);
 
     // 7. Return a successful response to the client
-    res.json({ status: 'success' });
+    res.json({ status: 'success', order: order ? order : null });
 
   })
 
