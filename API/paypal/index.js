@@ -43,7 +43,9 @@ module.exports = ({ config, db }) => {
     try {
       const query = setPaypalNVPQuery(req.body);
 
+      console.log(query)
       paypalNVP.request('SetExpressCheckout', query).then((result) => {
+        console.log('XXX', result)
         if (result.hasOwnProperty('TOKEN')) {
           apiStatus(res, { success: true, token: result.TOKEN }, 200);
         } else {

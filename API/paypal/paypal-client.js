@@ -16,6 +16,10 @@ function client(config) {
   return new checkoutNodeJssdk.core.PayPalHttpClient(environment(config));
 }
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 /**
  *
  * Set up and return PayPal JavaScript SDK environment with PayPal access credentials.

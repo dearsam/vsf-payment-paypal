@@ -47,11 +47,12 @@ export const PaypalButton = {
       }).render('.paypal-button')
     },
     getSegmentTotal (name) {
-      const total = this.platformTotal.filter(segment => {
-        return segment.code === name
-      })
-      if (total.length > 0) {
-        return Math.abs(parseFloat(total[0].value).toFixed(2))
+      const total = this.$store.state.cart.platformTotals.hasOwnProperty(name)
+        ? this.$store.state.cart.platformTotals[name]
+        : false
+
+      if (total) {
+        return Math.abs((total).toFixed(2))
       } else {
         return 0
       }
@@ -75,11 +76,11 @@ export const PaypalButton = {
           name: product.name,
           unit_amount: {
             currency_code: this.currencyCode,
-            value: product.price
+            value: product.totals.price_incl_tax
           },
           tax: {
             currency_code: this.currencyCode,
-            value: ''
+            value: 0 // product.totals.tax_amount
             // optional tax already set in totals, this is not needed
             // value: (product.totals.price_incl_tax - product.totals.price).toFixed(2)
           },
@@ -121,22 +122,22 @@ export const PaypalButton = {
         breakdown: {
           item_total: {
             currency_code: this.currencyCode,
-            value: this.getSegmentTotal('subtotal')
+            value: this.getSegmentTotal('subtotal_incl_tax')
           },
           shipping: {
             currency_code: this.currencyCode,
-            value: this.getSegmentTotal('shipping')
+            value: this.getSegmentTotal('shipping_incl_tax')
           },
           discount: {
             currency_code: this.currencyCode,
-            value: this.getSegmentTotal('discount')
+            value: 0
           },
           tax_total: {
             currency_code: this.currencyCode,
-            value: this.getSegmentTotal('tax')
+            value: 0
           }
         },
-        value: this.getSegmentTotal('grand_total'),
+        value: this.getSegmentTotal('base_grand_total'),
         currency_code: this.currencyCode
       }
     },
@@ -180,15 +181,30 @@ export const PaypalButton = {
         })
       })
     },
+    // async onApprove (data, actions) {
+    //   let additionalMethod = {
+    //     // magento 2 fields expects
+    //     paypal_express_checkout_token: this.tokenId,
+    //     button: 1,
+    //     paypal_express_checkout_payer_id: data.payerID,
+    //     paypal_express_checkout_redirect_required: false
+    //   }
+    //   this.$bus.$emit('checkout-do-placeOrder', additionalMethod)
+    // }
     async onApprove (data, actions) {
-      let additionalMethod = {
-        // magento 2 fields expects
-        paypal_express_checkout_token: this.tokenId,
-        button: 1,
-        paypal_express_checkout_payer_id: data.payerID,
-        paypal_express_checkout_redirect_required: false
+      const capture = await actions.order.capture()
+
+      if (capture.status !== 'COMPLETED') {
+        return false
       }
-      this.$bus.$emit('checkout-do-placeOrder', additionalMethod)
+
+      const completed = await store.dispatch('payment-paypal-magento2/complete', { orderId: data.orderID })
+
+      this.$bus.$emit('checkout-do-placeOrder', completed)
+
+      if (completed.status === 'success') {
+        this.$emit('payment-paypal-completed', completed)
+      }
     }
   }
 }
