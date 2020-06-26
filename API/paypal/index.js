@@ -35,7 +35,8 @@ module.exports = ({ config, db }) => {
       return res.sendStatus(500);
     }
     return res.json({
-      status: 'success'
+      status: 'success',
+      order: order ? order : null
     })
   })
 
@@ -45,7 +46,6 @@ module.exports = ({ config, db }) => {
 
       console.log(query)
       paypalNVP.request('SetExpressCheckout', query).then((result) => {
-        console.log('XXX', result)
         if (result.hasOwnProperty('TOKEN')) {
           apiStatus(res, { success: true, token: result.TOKEN }, 200);
         } else {

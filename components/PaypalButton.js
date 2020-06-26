@@ -198,7 +198,7 @@ export const PaypalButton = {
         return false
       }
 
-      const completed = await store.dispatch('payment-paypal-magento2/complete', { orderId: data.orderID })
+      const completed = await store.dispatch('payment-paypal-magento2/complete', { cart_id: data.orderID })
 
       this.$bus.$emit('checkout-do-placeOrder', completed)
 
