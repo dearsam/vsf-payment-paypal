@@ -113,24 +113,35 @@ export const PaypalButton = {
           admin_area_1: this.shippingDetails.region_code,
           admin_area_2: this.shippingDetails.city,
           postal_code: this.shippingDetails.zipCode,
-          country_code: this.shippingDetails.country
+          country_code: this.shippingDetails.country,
+          phone_number: this.shippingDetails.phoneNumber
         }
       }
     },
     getAmount () {
+      let itemTotal = this.getSegmentTotal('subtotal_incl_tax')
+      let shippingAmount = this.getSegmentTotal('shipping_incl_tax')
+      const discountAmount = this.getSegmentTotal('base_discount_amount')
+
+      // TODO: Improve case when discount is applied when shipping is zero
+      // if (shippingAmount === 0) {
+      //   itemTotal = (itemTotal - discountAmount).toFixed(2)
+      //   shippingAmount = discountAmount
+      // }
+
       return {
         breakdown: {
           item_total: {
             currency_code: this.currencyCode,
-            value: this.getSegmentTotal('subtotal_incl_tax')
+            value: itemTotal
           },
           shipping: {
             currency_code: this.currencyCode,
-            value: this.getSegmentTotal('shipping_incl_tax')
+            value: shippingAmount
           },
           discount: {
             currency_code: this.currencyCode,
-            value: this.getSegmentTotal('base_discount_amount')
+            value: discountAmount
           },
           tax_total: {
             currency_code: this.currencyCode,

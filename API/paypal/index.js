@@ -93,6 +93,11 @@ function setPaypalNVPQuery(pay) {
     'PAYMENTREQUEST_0_SHIPTOZIP': pay.purchase_units[0].shipping.address.postal_code,
     'PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE': pay.purchase_units[0].shipping.address.country_code
   };
+  const phoneNumber = pay.purchase_units[0].shipping.address.phone_number
+
+  if (phoneNumber) {
+    query['PAYMENTREQUEST_n_SHIPTOPHONENUM'] = phoneNumber
+  }
 
   return Object.assign(query, getProducts(pay.purchase_units[0].items));
 }
