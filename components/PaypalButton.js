@@ -123,12 +123,6 @@ export const PaypalButton = {
       let shippingAmount = this.getSegmentTotal('shipping_incl_tax')
       const discountAmount = this.getSegmentTotal('base_discount_amount')
 
-      // TODO: Improve case when discount is applied when shipping is zero
-      // if (shippingAmount === 0) {
-      //   itemTotal = (itemTotal - discountAmount).toFixed(2)
-      //   shippingAmount = discountAmount
-      // }
-
       return {
         breakdown: {
           item_total: {

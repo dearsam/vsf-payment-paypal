@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="align-center mb10" style="color: red;">{{ $t(errorMessage) }}</div>
-    <div class="paypal-button" />
+    <div id="paypal-button" class="paypal-button" />
   </div>
 </template>
 
@@ -12,3 +12,15 @@ export default {
   mixins: [PaypalButton]
 }
 </script>
+
+<style lang="scss">
+  #paypal-button {
+    .paypal-buttons {
+      iframe {
+        &.component-frame {
+          z-index: 1;
+        }
+      }
+    }
+  }
+</style>

@@ -89,7 +89,6 @@ function setPaypalNVPQuery(pay) {
     'PAYMENTREQUEST_0_SHIPTOSTREET': pay.purchase_units[0].shipping.address.address_line_1,
     'PAYMENTREQUEST_0_SHIPTOSTREET2': pay.purchase_units[0].shipping.address.address_line_2,
     'PAYMENTREQUEST_0_SHIPTOCITY': pay.purchase_units[0].shipping.address.admin_area_2,
-    'PAYMENTREQUEST_0_SHIPTOSTATE': pay.purchase_units[0].shipping.address.admin_area_1,
     'PAYMENTREQUEST_0_SHIPTOZIP': pay.purchase_units[0].shipping.address.postal_code,
     'PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE': pay.purchase_units[0].shipping.address.country_code
   };
