@@ -31,7 +31,6 @@ module.exports = ({ config, db }) => {
     try {
       order = await paypalClient.client(config.extensions.paypal).execute(request);
     } catch (err) {
-      console.error(err);
       return res.sendStatus(500);
     }
     return res.json({
@@ -44,7 +43,6 @@ module.exports = ({ config, db }) => {
     try {
       const query = setPaypalNVPQuery(req.body);
 
-      console.log(query)
       paypalNVP.request('SetExpressCheckout', query).then((result) => {
         if (result.hasOwnProperty('TOKEN')) {
           apiStatus(res, { success: true, token: result.TOKEN }, 200);

@@ -181,16 +181,6 @@ export const PaypalButton = {
         })
       })
     },
-    // async onApprove (data, actions) {
-    //   let additionalMethod = {
-    //     // magento 2 fields expects
-    //     paypal_express_checkout_token: this.tokenId,
-    //     button: 1,
-    //     paypal_express_checkout_payer_id: data.payerID,
-    //     paypal_express_checkout_redirect_required: false
-    //   }
-    //   this.$bus.$emit('checkout-do-placeOrder', additionalMethod)
-    // }
     async onApprove (data, actions) {
       const capture = await actions.order.capture()
 
