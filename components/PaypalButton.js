@@ -130,7 +130,7 @@ export const PaypalButton = {
           },
           discount: {
             currency_code: this.currencyCode,
-            value: 0
+            value: this.getSegmentTotal('base_discount_amount')
           },
           tax_total: {
             currency_code: this.currencyCode,
