@@ -13,6 +13,11 @@ export const PaypalButton = {
         shape: 'rect',
         label: 'paypal'
       })
+    },
+    isShippingFormValid: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   data () {
@@ -43,7 +48,8 @@ export const PaypalButton = {
       window.paypal.Buttons({
         style: this.styling,
         createOrder: this.onCreateOrder,
-        onApprove: this.onApprove
+        onApprove: this.onApprove,
+        onClick: this.onButtonClick
       }).render('.paypal-button')
     },
     getSegmentTotal (name) {
@@ -145,6 +151,11 @@ export const PaypalButton = {
         value: this.getSegmentTotal('base_grand_total'),
         currency_code: this.currencyCode
       }
+    },
+    async onButtonClick (data, actions) {
+      await this.$emit('paypal-button-click')
+
+      return this.isShippingFormValid ? actions.resolve() : actions.reject()
     },
     async onCreateOrder (data, actions) {
       return store.dispatch('cart/syncTotals', {
