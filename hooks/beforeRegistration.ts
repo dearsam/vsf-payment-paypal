@@ -1,4 +1,5 @@
-import { currentStoreView } from '@vue-storefront/core/lib/multistore'
+// import { isServer } from '@vue-storefront/core/helpers'
+// import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 
 export function beforeRegistration({ Vue, config, store, isServer }) {
   const VSF_PAYPAL_CODE = 'vsfpaypal'
@@ -14,6 +15,8 @@ export function beforeRegistration({ Vue, config, store, isServer }) {
   }
 
   if (!Vue.prototype.$isServer) {
+    // The PayPal script is loaded in the checkout in OrderReview.vue instead.
+    /*
     const storeView = currentStoreView()
     const { currencyCode } = storeView.i18n
     const clientId = config.paypal.clientId
@@ -21,6 +24,7 @@ export function beforeRegistration({ Vue, config, store, isServer }) {
     var script = document.createElement('script')
     script.setAttribute('src', sdkUrl)
     document.head.appendChild(script)
+    */
 
     let currentPaymentMethodIsPaypal = false
     store.watch((state) => state.checkout.paymentDetails, (prevMethodCode, newMethodCode) => {
