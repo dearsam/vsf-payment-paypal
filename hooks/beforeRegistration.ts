@@ -1,4 +1,5 @@
-// import { isServer } from '@vue-storefront/core/helpers'
+import { isServer } from '@vue-storefront/core/helpers'
+import EventBus from '@vue-storefront/core/compatibility/plugins/event-bus'
 // import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 
 export function beforeRegistration({ Vue, config, store, isServer }) {
@@ -14,7 +15,7 @@ export function beforeRegistration({ Vue, config, store, isServer }) {
     })
   }
 
-  if (!Vue.prototype.$isServer) {
+  if (!isServer) {
     // The PayPal script is loaded in the checkout in OrderReview.vue instead.
     /*
     const storeView = currentStoreView()
@@ -33,9 +34,9 @@ export function beforeRegistration({ Vue, config, store, isServer }) {
 
     const invokePlaceOrder = () => {
       if (currentPaymentMethodIsPaypal) {
-        Vue.prototype.$bus.$emit('checkout-do-placeOrder', {})
+        EventBus.$emit('checkout-do-placeOrder', {})
       }
     }
-    Vue.prototype.$bus.$on('checkout-before-placeOrder', invokePlaceOrder)
+    EventBus.$on('checkout-before-placeOrder', invokePlaceOrder)
   }
 }
