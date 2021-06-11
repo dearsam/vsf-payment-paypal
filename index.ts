@@ -1,13 +1,13 @@
+import { createModule } from '@vue-storefront/core/lib/module'
 import { module } from './store'
 import { beforeRegistration } from './hooks/beforeRegistration'
-import { VueStorefrontModule, VueStorefrontModuleConfig } from '@vue-storefront/core/lib/module'
+import { afterRegistration } from './hooks/afterRegistration'
 
-export const KEY = 'paypal'
+export const KEY = 'payment-paypal-magento2'
 
-const moduleConfig: VueStorefrontModuleConfig = {
+export const Paypal = createModule({
   key: KEY,
-  store: { modules: [{ key: KEY, module }]},
-  beforeRegistration
-}
-
-export const Paypal = new VueStorefrontModule(moduleConfig)
+  store: { modules: [{ key: KEY, module }] },
+  beforeRegistration,
+  afterRegistration
+})
