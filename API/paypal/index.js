@@ -1,5 +1,6 @@
 // import { apiStatus } from '../../../lib/util';
 import { Router } from 'express';
+import { getCurrentStoreView, getCurrentStoreCode } from '../../../lib/util';
 // const Magento2Client = require('magento2-rest-client').Magento2Client
 
 // 1a. Import the SDK package
@@ -27,7 +28,11 @@ module.exports = ({ config, db }) => {
 
     let order;
     try {
-      order = await paypalClient.client(config.extensions.paypal).execute(request);
+      const storeView = getCurrentStoreView(getCurrentStoreCode())
+      const clientId = config.extensions.paypal[`clientId_${storeView.i18n.currencyCode}`] || config.extensions.paypal.clientId
+      const clientSecret = config.extensions.paypal[`secret_${storeView.i18n.currencyCode}`] || config.extensions.paypal.secret
+      const env = config.extensions.paypal.env
+      order = await paypalClient.client({ env, clientId, clientSecret }).execute(request);
     } catch (err) {
 
       // 4. Handle any errors from the call
