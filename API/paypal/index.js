@@ -28,7 +28,7 @@ module.exports = ({ config, db }) => {
 
     let order;
     try {
-      const storeView = getCurrentStoreView(getCurrentStoreCode())
+      const storeView = getCurrentStoreView(getCurrentStoreCode(req))
       const clientId = config.extensions.paypal[`clientId_${storeView.i18n.currencyCode}`] || config.extensions.paypal.clientId
       const clientSecret = config.extensions.paypal[`secret_${storeView.i18n.currencyCode}`] || config.extensions.paypal.secret
       const env = config.extensions.paypal.env
